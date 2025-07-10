@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package cdp_lcp;
+
+option go_package = "proto/compiled";
+
+// Servicio LCP con el método de validación de entrenadores
+service CDP_LCP {
+    rpc ValidarEntrenadores(ValidarEntrenadoresRequest) returns (ValidarEntrenadoresResponse);
+}
+
+// Mensaje de petición: enviamos los dos IDs de los entrenadores
+message ValidarEntrenadoresRequest {
+    string Id1 = 1;
+    string Id2 = 2;
+}
+
+// Mensaje de respuesta: indicamos si ambos están activos
+message ValidarEntrenadoresResponse {
+    // true si **ambos** entrenadores existen y están en estado Activo
+    bool Activos = 1;
+}

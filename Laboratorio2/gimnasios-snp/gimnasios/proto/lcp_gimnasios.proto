@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package combate;
+
+option go_package = "proto/compiled";
+
+service LCP_Gimnasio {
+    rpc AsignarCombate(CombateRequest) returns (CombateResponse);
+}
+
+import "proto/shared.proto";
+
+// Respuesta opcional del servicio gRPC (puede retornar estado simple o nada)
+message CombateResponse {
+    string Estado = 1; // "ok" o mensaje de error
+}
+
+// Mensaje enviado por LCP al gimnasio para asignar un combate
+message CombateRequest {
+    string CombateId = 1; // ID del gimnasio
+    int64 TorneoId = 2;              
+    shared.Entrenador Entrenador1 = 3;
+    shared.Entrenador Entrenador2 = 4;
+    string Region = 7; 
+}

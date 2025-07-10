@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package shared;
+
+option go_package = "proto/compiled";
+
+// Servicio compartido
+service Shared {}
+
+message Torneo {
+    int64 Id = 1;
+    string Region = 2;
+    repeated Entrenador Inscritos = 3;
+}
+
+message Entrenador {
+    string Id = 1;
+    string Nombre = 2;
+    string Region = 3;
+    int64 Ranking = 4;
+    string Estado = 5;
+    int64 Suspendido = 6;
+}

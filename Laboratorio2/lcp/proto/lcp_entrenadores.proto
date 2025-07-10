@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package lcp_entrenadores;
+
+option go_package = "proto/compiled";
+
+// Servicio entre LCP y entrenadores
+service LCP_Entrenadores {
+    rpc ConsultarTorneosDisponibles (QueryRequest) returns (QueryResponse) {}
+    rpc InscribirEntrenador (InscripcionRequest) returns (InscripcionResponse) {}
+}
+
+import "proto/shared.proto";
+
+message QueryRequest {
+    shared.Entrenador Entrenador = 1;
+}
+
+message QueryResponse {
+    repeated shared.Torneo Torneos = 1;
+}
+
+message InscripcionRequest {
+    int64 IdTorneo = 1;
+    shared.Entrenador Entrenador = 2;
+}
+
+message InscripcionResponse {
+    string Mensaje = 1;
+    int32 Status = 2; // 1: Ok, 2: Torneo no está disponible 3: Región incompatible con el torneo 4: Inscrito en otro torneo 5: Inscrito en este torneo
+}
