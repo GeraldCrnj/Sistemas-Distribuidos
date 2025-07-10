@@ -1,6 +1,6 @@
 # Proyecto Grupo 16 - Laboratorios
 
-Este repositorio contiene los laboratorios desarrollados por el Grupo 16 en el marco del curso (asumimos: Sistemas Distribuidos o similar). Cada laboratorio aborda distintos aspectos del contenido del curso, utilizando diversas herramientas y lenguajes de programación.
+Este repositorio contiene los laboratorios desarrollados por el Grupo 16 en el marco del curso (Sistemas Distribuidos). Cada laboratorio aborda distintos aspectos del contenido del curso, utilizando diversas herramientas y lenguajes de programación.
 
 ## Estructura del repositorio
 
