@@ -1,0 +1,35 @@
+services:
+  administrator:
+    build: ./administrator
+    container_name: administrator_container
+    networks:
+      - test_network
+
+  gameservers:
+    build: ./gameservers
+    container_name: gameservers_container
+    ports:
+      - "50055:50055"
+      - "50056:50056"
+      - "50057:50057"
+
+    networks:
+      - test_network
+
+  matchmaker:
+    build: ./matchmaker
+    container_name: matchmaker_container
+    ports:
+      - "50051:50051"
+    networks:
+      - test_network
+
+  player:
+    build: ./player
+    container_name: player_container
+    networks:
+      - test_network
+
+networks:
+  test_network:
+    external: false

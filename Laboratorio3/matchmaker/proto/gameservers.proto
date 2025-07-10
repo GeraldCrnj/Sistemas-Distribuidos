@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package gameserversserver;
+
+option go_package = "matchmaker/proto/compiled";
+
+service GameServersService {
+  // Matchmaker
+  rpc AssignMatch(AssignMatchRequest) returns (AssignMatchResponse);
+  rpc PingServer(ServerId) returns (PingResponse);
+}
+
+message AssignMatchRequest {
+  string match_id = 1;
+  repeated string player_ids = 2;
+  map<string, int32> vector_clock = 3;
+}
+
+message AssignMatchResponse {
+  int32 status_code = 1; // 0: ok, 1: error
+  string message = 2;
+  map<string, int32> vector_clock = 3;
+}
+
+message ServerId {
+  string address = 1;
+  string status = 2; // "AVAILABLE", "BUSY", "DOWN", "UNKNOWN"
+  int64 last_heartbeat = 3;
+  string current_match_id = 4;
+
+}
+
+message PingResponse {
+  int32 status_code = 1; // 0: ok, 1: error
+}

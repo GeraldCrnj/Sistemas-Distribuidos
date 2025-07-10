@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package gameserversserver;
+
+option go_package = "gameservers/proto/compiled";
+
+service GameServersService {
+  // Matchmaker
+  rpc AssignMatch(AssignMatchRequest) returns (AssignMatchResponse);
+  rpc PingServer(ServerId) returns (PingResponse);
+}
+
+message AssignMatchRequest {
+  string match_id = 1;
+  repeated string player_ids = 2;
+  map<string, int32> vector_clock = 3;
+}
+
+message AssignMatchResponse {
+  int32 status_code = 1; // 0: ok, 1: error
+  string message = 2;
+  map<string, int32> vector_clock = 3;
+}
+
+message ServerId {
+  int32 server_id = 1;
+}
+
+message PingResponse {
+  int32 status_code = 1; // 0: ok, 1: error
+}

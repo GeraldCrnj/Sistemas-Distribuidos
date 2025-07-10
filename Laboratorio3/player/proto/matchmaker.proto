@@ -1,0 +1,132 @@
+syntax = "proto3";
+
+package matchmaker;
+
+option go_package = "player/proto/compiled";
+
+service MatchmakerService {
+  // Player
+  rpc QueuePlayer(PlayerInfoRequest) returns (QueuePlayerResponse);
+  rpc GetPlayerStatus(PlayerStatusRequest) returns (PlayerStatusResponse);
+  rpc CancelMatchmaking(CancelRequest) returns (CancelResponse);
+
+  // Admin
+  rpc AdminGetSystemStatus(AdminRequest) returns (SystemStatusResponse);
+  rpc AdminUpdateServerState(AdminUpdateServerRequest) returns (AdminUpdateResponse);
+
+  // GameServer
+  rpc UpdateServerStatus(ServerStatusUpdateRequest) returns (ServerStatusUpdateResponse);
+
+  // Nuevo RPC para sincronización de estado
+  rpc SyncState(StateSyncRequest) returns (StateSyncResponse);
+}
+
+// Mensajes del jugador
+message PlayerInfoRequest {
+  string player_id = 1;
+  string game_mode_preference = 2;
+  map<string, int32> vector_clock = 3;
+}
+
+message QueuePlayerResponse {
+  int32 status_code = 1; // 0 = ok, 1 = error
+  string message = 2;
+  map<string, int32> vector_clock = 3;
+}
+
+message PlayerStatusRequest {
+  string player_id = 1;
+}
+
+message PlayerStatusResponse {
+  string status = 1; // IDLE, IN_QUEUE, IN_MATCH
+  string match_id = 2;
+  string server_address = 3; // Servidor de partida
+  map<string, int32> vector_clock = 4;
+}
+
+message CancelRequest {
+  string player_id = 1;
+  map<string, int32> vector_clock = 2;
+}
+
+message CancelResponse {
+  int32 status_code = 1;
+  string message = 2;
+  map<string, int32> vector_clock = 3;
+}
+
+// Mensajes del administrador
+message AdminRequest {
+  
+}
+
+message SystemStatusResponse {
+  repeated ServerState servers = 1;
+  repeated PlayerQueueEntry players = 2;
+}
+
+message ServerState {
+  int32 id = 1;
+  string status = 2;
+  string address = 3;
+  int32 current_match_id = 4;
+}
+
+message PlayerQueueEntry {
+  string player_id = 1;
+  int64 time_in_queue = 2;
+}
+
+message AdminUpdateServerRequest {
+  int32 server_id = 1;
+  string new_forced_status = 2; // "AVAILABLE", "DOWN"
+}
+
+message AdminUpdateResponse {
+  int32 status_code = 1;
+  string message = 2;
+}
+
+// Mensajes para Game Servers
+message ServerStatusUpdateRequest {
+  int32 server_id = 1;
+  string new_status = 2;  // "AVAILABLE", "BUSY", "DOWN"
+  string address = 3;
+}
+
+message ServerStatusUpdateResponse {
+  int32 status_code = 1; // 0: ok, 1: error
+}
+
+// Mensajes para sincronización de estado distribuido
+
+message PlayerStateProto {
+  string player_id = 1;
+  string state = 2;             // IDLE, IN_QUEUE, RESERVED, IN_MATCH
+  string match_id = 3;
+  string server_addr = 4;
+  map<string, int32> vector_clock = 5;
+  string game_preference = 6;
+  int64 queue_enter_time_unix = 7; // timestamp Unix en segundos
+}
+
+message GameServerStateProto {
+  string id = 1;
+  string address = 2;
+  string status = 3;           // AVAILABLE, BUSY, DOWN
+  int64 last_check_unix = 4;   // timestamp Unix en segundos
+  string current_match_id = 5;
+}
+
+message StateSyncRequest {
+  map<string, PlayerStateProto> players = 1;
+  map<string, GameServerStateProto> servers = 2;
+  map<string, int32> vector_clock = 3;
+  string node_id = 4;  // Identificador del nodo que envía el estado
+}
+
+message StateSyncResponse {
+  int32 status_code = 1;
+  string message = 2;
+}
