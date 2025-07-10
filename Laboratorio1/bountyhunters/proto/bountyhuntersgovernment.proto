@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package bountyhuntersgovernment;
+
+option go_package = "grpc-server/proto";
+
+import "shared.proto";
+
+service Bountyhuntersgovernment {
+    rpc GetWantedPirates (GetWantedPiratesRequest) returns (GetWantedPiratesResponse) {}
+    rpc SendCaptureReport(SendCaptureReportRequest) returns (SendCaptureReportResponse) {} // Recibe el informe de captura del pirata por parte del cazarrecompensas
+    rpc AssignBountyhunterId (AssignBountyhunterIdRequest) returns (AssignBountyhunterIdResponse) {}
+}
+
+message GetWantedPiratesRequest {}
+
+message GetWantedPiratesResponse {
+    repeated shared.Pirate pirates = 1;
+}
+
+message SendCaptureReportRequest {
+    int32 BountyhunterId = 1;
+    shared.Pirate Pirate = 2;
+    string State = 3; // "Entregado" o "Perdido"
+    string Buyer = 4; // "Marina" o "Submundo"
+}
+
+message SendCaptureReportResponse {
+    int32 NewReputation = 1;
+}
+
+message AssignBountyhunterIdRequest {}
+
+message AssignBountyhunterIdResponse {
+    int32 BountyhunterId = 1;
+}

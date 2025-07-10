@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package bountyhuntersunderworld;
+
+option go_package = "grpc-server/proto";
+
+import "shared.proto";
+
+service BountyhuntersUnderworldService {
+    rpc SellPirate (SellUnderworldRequest) returns (SellUnderworldResponse) {}
+    rpc IsUnderworldSendingMercenaries (PirateRequest) returns (SendingMercenariesResponse) {}
+}
+
+message SellUnderworldRequest {
+    shared.Pirate pirate = 1;
+}
+
+message SellUnderworldResponse {
+    int64 payment = 2;
+    bool isFraud = 3;
+}
+
+message PirateRequest {
+    shared.Pirate pirateCatched = 1;
+}
+
+message SendingMercenariesResponse {
+    bool isSendingMercenaries = 1;
+}

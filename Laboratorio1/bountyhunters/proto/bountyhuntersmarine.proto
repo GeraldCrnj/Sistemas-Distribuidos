@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package bountyhuntersmarine;
+
+option go_package = "grpc-server/proto";
+
+import "shared.proto";
+
+service BountyhuntersMarineService {
+    rpc SellPirate (SellMarineRequest) returns (SellMarineResponse) {}
+    rpc IsMarineConfiscatingPirate (MarineConfiscatingRequest) returns (MarineConfiscatingResponse) {}
+}
+
+message SellMarineRequest {
+    int32 BountyhunterId = 1;
+    shared.Pirate pirate = 2;
+}
+
+message SellMarineResponse {
+    int32 statusCode = 1; // 0: Éxito, 1: Pago reducido por sobreactividad, 2: Rechazo por reputación, 3: Rechazo por pirata ya entregado
+    int32 payment = 2;
+}
+
+message MarineConfiscatingRequest {
+    shared.Pirate pirateCatched = 1;
+    int32 BountyHunterId = 2;
+}
+
+message MarineConfiscatingResponse {
+    bool isMarineConfiscating = 1;
+}

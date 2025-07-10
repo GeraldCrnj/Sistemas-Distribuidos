@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package shared;
+
+option go_package = "grpc-server/proto";
+
+message Pirate {
+    int32 Id = 1;
+    string Name = 2;
+    int32 Reward = 3; // Recompensa en $ Berries
+    string DangerLevel = 4;
+    string State = 5;
+}

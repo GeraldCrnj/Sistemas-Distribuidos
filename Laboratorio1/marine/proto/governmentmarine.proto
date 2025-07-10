@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package governmentmarine;
+
+option go_package = "grpc-server/proto";
+
+import "shared.proto";
+
+service GovernmentMarine {
+    rpc SendMarineCaptureReport(SendMarineCaptureReportRequest) returns (SendMarineCaptureReportResponse) {}
+    rpc AlertMarine(AlertMarineRequest) returns (AlertMarineResponse) {}
+    rpc GetWantedPiratesFromMarine (GetWantedPiratesFromMarineRequest) returns (GetWantedPiratesFromMarineResponse) {}
+    rpc GetBountyHunterReputation (BountyHunterReputationRequest) returns (BountyHunterReputationResponse) {}
+    rpc CheckIfTooManySellsToUnderworld (TooManySellsRequest) returns (TooManySellsResponse) {}
+}
+
+message AlertMarineRequest {}
+
+message AlertMarineResponse {}
+
+message GetWantedPiratesFromMarineRequest {}
+
+message GetWantedPiratesFromMarineResponse {
+    repeated shared.Pirate pirates = 1;
+}
+
+message BountyHunterReputationRequest {
+    int32 BountyHunterId = 1;
+}
+
+message BountyHunterReputationResponse {
+    int32 BountyHunterReputation = 1;
+}
+
+message TooManySellsRequest {
+    int32 BountyHunterId = 1;
+}
+
+message TooManySellsResponse {
+    bool tooManySells = 1;
+}
+
+message SendMarineCaptureReportRequest {
+    shared.Pirate pirate = 1;
+    int32 BountyHunterId = 2;
+}
+
+message SendMarineCaptureReportResponse {}

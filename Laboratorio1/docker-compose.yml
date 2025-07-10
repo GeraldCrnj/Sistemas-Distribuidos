@@ -1,0 +1,41 @@
+services:
+  bountyhunters:
+    build: ./bountyhunters
+    networks:
+      - test_network
+    deploy:
+      replicas: 3  # Número de replicas a ejecutar o número de cazarrecompensas
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 50M
+      restart_policy:
+        condition: on-failure
+
+  government:
+    build: ./government
+    container_name: government_container
+    ports:
+      - "50051:50051"
+    networks:
+      - test_network
+    
+  underworld:
+    build: ./underworld
+    container_name: underworld_container
+    ports:
+      - "50052:50052"
+    networks:
+      - test_network
+  
+  marine:
+    build: ./marine
+    container_name: marine_container
+    ports:
+      - "50053:50053"
+    networks:
+      - test_network
+
+networks:
+  test_network:
+    external: false
